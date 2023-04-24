@@ -1,16 +1,6 @@
-# cay_count_app
+- DateTime
+- DatePicker
+- stful 위젯 관리
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### 최상위 위젯이 Stateful 위젯으로 관리되어야 관리하기 편리함
+장점 : 다른 위젯이 생겨 데이터를 공유해야하는 경우 데이터의 흐름을 사용하기 유용함.
