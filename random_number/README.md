@@ -8,5 +8,9 @@
 - Navigation
 - Button
 - Slider
-- 난수 생성
+- 난수 생성: math 라이브러리
 
+---
+
+## Navigation
+스크린 이동
