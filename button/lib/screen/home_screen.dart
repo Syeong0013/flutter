@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 padding: MaterialStateProperty.resolveWith((Set<MaterialState>states) {
                   if(states.contains(MaterialState.pressed)){
-                    return const EdgeInsets.all(100.0);
+                    return const EdgeInsets.all(80.0);
                   }
                   return null;
                 }),
