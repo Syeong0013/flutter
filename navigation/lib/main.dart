@@ -3,7 +3,7 @@ import 'package:navigation/screen/home_screen.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       home: HomeScreen(),
     ),
   );

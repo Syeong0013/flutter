@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
               builder: (BuildContext context) => RouteOneScreen(),
             ));
           },
-          child: Text('버튼'),
+          child: Text('Push'),
         )
       ],
     );
