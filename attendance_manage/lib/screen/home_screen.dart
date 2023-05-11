@@ -10,6 +10,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool choolCheckDone = false;
+  GoogleMapController? mapController;
+
   // latitude 위도, longitude 경도
   static const LatLng homeLatLng = LatLng(
     37.4947648084,
@@ -97,12 +100,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       _CustomGoogleMap(
                         initialPosition: initialPosition,
-                        circle: isWithinRange
-                            ? withinDistanceCircle
-                            : notDistanceCircle,
+                        // 2중 if
+                        circle: choolCheckDone
+                            ? checkDoneCircle
+                            : isWithinRange
+                                ? withinDistanceCircle
+                                : notDistanceCircle,
                         marker: marker,
+                        onMapCreated: onMapCreated,
                       ),
-                      const _ChoolCheckButton(),
+                      _ChoolCheckButton(
+                        isWithinRange: isWithinRange,
+                        choolCheckDone: choolCheckDone,
+                        onPressed: onChoolCheckPressed,
+                      ),
                     ],
                   );
                 });
@@ -114,6 +125,50 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
     );
+  }
+
+  onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  onChoolCheckPressed() async {
+    // return 값은 pop에서 담겨오는 값을 받음.
+    final result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              '출근하기',
+            ),
+            content: const Text(
+              '출근을 하시겠습니까?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text(
+                  '취소',
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text(
+                  '출근하기',
+                ),
+              ),
+            ],
+          );
+        });
+
+    if (result) {
+      setState(
+        () => choolCheckDone = true,
+      );
+    }
   }
 
   // 권한 요청 및 권한 상태 관리
@@ -173,6 +228,32 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.bold,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () async {
+            if (mapController == null) {
+              return;
+            } else {
+              // 현재 위치 가져오기 
+              final location = await Geolocator.getCurrentPosition();
+
+              // 현재 위치로 이동하기
+              mapController!.animateCamera(
+                CameraUpdate.newLatLng(
+                  LatLng(
+                    location.latitude,
+                    location.longitude,
+                  ),
+                ),
+              );
+            }
+          },
+          icon: const Icon(
+            Icons.my_location,
+            color: Colors.blue,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -181,11 +262,13 @@ class _CustomGoogleMap extends StatelessWidget {
   final CameraPosition initialPosition;
   final Circle circle;
   final Marker marker;
+  final MapCreatedCallback onMapCreated;
 
   const _CustomGoogleMap({
     required this.initialPosition,
     required this.circle,
     required this.marker,
+    required this.onMapCreated,
     Key? key,
   }) : super(key: key);
 
@@ -203,19 +286,49 @@ class _CustomGoogleMap extends StatelessWidget {
         // Set으로 Circle을 넘김
         circles: {circle},
         markers: {marker},
+        onMapCreated: onMapCreated,
       ),
     );
   }
 }
 
 class _ChoolCheckButton extends StatelessWidget {
-  const _ChoolCheckButton();
+  final bool isWithinRange;
+  final VoidCallback onPressed;
+  final bool choolCheckDone;
+
+  const _ChoolCheckButton({
+    required this.isWithinRange,
+    required this.onPressed,
+    required this.choolCheckDone,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      flex: 1,
-      child: Text('출근'),
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.timelapse_outlined,
+            size: 50.0,
+            color: choolCheckDone
+                ? Colors.green
+                : isWithinRange
+                    ? Colors.blue
+                    : Colors.red,
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          if (!choolCheckDone && isWithinRange)
+            TextButton(
+              onPressed: onPressed,
+              child: const Text('출근하기'),
+            ),
+        ],
+      ),
     );
   }
 }
