@@ -1,5 +1,3 @@
-## 키 가리기
-
 # attendance_manage
 
 학습 목표
@@ -117,6 +115,7 @@ Position.longitude -> 경도
 ---
 
 ## 위경도 간 거리 구하기
+
 `Geolocator.distanceBetween()`를 사용하여 간편하게 계산할 수 있음.
 
 ---
