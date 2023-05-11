@@ -1,16 +1,23 @@
+## 키 가리기
+
 # attendance_manage
 
-A new Flutter project.
+학습 목표
 
-## Getting Started
+- Google Maps 지도 사용하기
+- 지도에 마커 표시하기
+- 지도에 동그라미 표시하기
+- 현재 위치 표시하고 위경도 구하기
+- 위경도 간 거리 구하기
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## FutureBuilder
+`future` 파라미터
+    Future 형식의 값을 리턴하는 함수는 뭐든 넣을 수 있다.
+    함수의 상태가 변경될 때마다 빌더를 다시 실행하여 화면을 다시 그려줌. 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+다양한 결과에 따라 맞는 화면을 표출해줄 수 있음.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## StreamBuilder
