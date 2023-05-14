@@ -22,17 +22,18 @@ class _CamScreenState extends State<CamScreen> {
   int? otherUid;
 
   @override
-  void dispose() async {
+  Future<void> dispose() async {
+    debugPrint('dispose');
     if (_engine != null) {
+
+      debugPrint('dispose if');
       await _engine!.leaveChannel(
         options: const LeaveChannelOptions(),
       );
       _engine!.release();
     }
 
-    uid = 0;
-
-    super.dispose();
+    super.dispose;
   }
 
   @override
@@ -46,6 +47,7 @@ class _CamScreenState extends State<CamScreen> {
       body: FutureBuilder<bool>(
         future: init(),
         builder: (context, snapshot) {
+          debugPrint('FutureBuilder 실행');
           if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -98,6 +100,8 @@ class _CamScreenState extends State<CamScreen> {
   }
 
   renderMainView() {
+
+    debugPrint('renderMainView 실행');
     // uid가 없다는 것은 채널에 입장하지 않았다.
     if (uid == null) {
       return const Center(
@@ -143,6 +147,8 @@ class _CamScreenState extends State<CamScreen> {
 
   // 카메라 마이크 권한 요청 함수
   Future<bool> init() async {
+
+    debugPrint('init 실행');
     // 카메라 권한과 마이크 권한 요청
     final resp = await [Permission.camera, Permission.microphone].request();
 
@@ -192,13 +198,13 @@ class _CamScreenState extends State<CamScreen> {
           },
 
           // 채널에서 나갔을 때
-          onLeaveChannel: (RtcConnection connection, RtcStats stats) {
-            // stats -> 영상통화에 대한 통계 정보
-            debugPrint('채널 퇴장');
-            setState(() {
-              uid = 0;
-            });
-          },
+          // onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+          //   // stats -> 영상통화에 대한 통계 정보
+          //   debugPrint('채널 퇴장');
+          //   setState(() {
+          //     uid = 0;
+          //   });
+          // },
 
           // 상대방 유저가 들어왔을 때
           onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
